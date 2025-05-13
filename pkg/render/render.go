@@ -54,12 +54,13 @@ func RenderTemplate(w http.ResponseWriter, tmpl string, td *models.TemplateData)
 	}
 }
 
-// CreateTemplateCache creates a template cache as a map
+// filepath: pkg/render/render.go
 func CreateTemplateCache() (map[string]*template.Template, error) {
 	myCache := map[string]*template.Template{}
 
 	pages, err := filepath.Glob("./templates/*.page.tmpl")
 	if err != nil {
+		log.Println("Error finding page templates:", err)
 		return myCache, err
 	}
 
@@ -67,17 +68,20 @@ func CreateTemplateCache() (map[string]*template.Template, error) {
 		name := filepath.Base(page)
 		ts, err := template.New(name).Funcs(functions).ParseFiles(page)
 		if err != nil {
+			log.Println("Error parsing page template:", page, err)
 			return myCache, err
 		}
 
 		matches, err := filepath.Glob("./templates/*.layout.tmpl")
 		if err != nil {
+			log.Println("Error finding layout templates:", err)
 			return myCache, err
 		}
 
 		if len(matches) > 0 {
 			ts, err = ts.ParseGlob("./templates/*.layout.tmpl")
 			if err != nil {
+				log.Println("Error parsing layout templates:", err)
 				return myCache, err
 			}
 		}
