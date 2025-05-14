@@ -1,0 +1,4 @@
+go run
+go run -v
+go run -coverage
+go test -coverprofile=coverage.out && go tool cover -html=coverage.out
