@@ -7,3 +7,5 @@ Soda related CMDs
 soda
 soda generate fizz name_of_migration
 soda migrate
+soda migrate down
+soda reset
